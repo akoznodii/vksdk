@@ -1,0 +1,7 @@
+vksdk/bin/Debug/
+vksdk/obj/Debug/
+packages/
+.nuget/NuGet.exe
+*.Cache
+*.suo
+*.user
