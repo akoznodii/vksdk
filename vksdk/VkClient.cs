@@ -6,6 +6,7 @@ using VK.Common;
 using VK.Friends;
 using VK.Groups;
 using VK.OAuth;
+using VK.Statistics;
 using VK.Users;
 using VK.Xml;
 
@@ -17,6 +18,7 @@ namespace VK
         private readonly AudiosMethods _audiosMethods;
         private readonly FriendsMethods _friendsMethods;
         private readonly GroupsMethods _groupsMethods;
+        private readonly StatisticsMethods _statisticsMethods;
 
         public VkClient(long applicationId, AccessRights accessRights)
         {
@@ -29,6 +31,7 @@ namespace VK
             _audiosMethods = new AudiosMethods(this);
             _friendsMethods = new FriendsMethods(this);
             _groupsMethods = new GroupsMethods(this);
+            _statisticsMethods = new StatisticsMethods(this);
         }
 
         public long ApplicationId { get; private set; }
@@ -50,6 +53,8 @@ namespace VK
         public FriendsMethods Friends { get { return _friendsMethods; } }
 
         public GroupsMethods Groups { get { return _groupsMethods; } }
+
+        public StatisticsMethods Stats { get { return _statisticsMethods; } }
 
         public long UserId
         {

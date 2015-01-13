@@ -59,6 +59,7 @@
     <Compile Include="Groups\GroupFilters.cs" />
     <Compile Include="Groups\GroupsMethods.cs" />
     <Compile Include="Groups\GroupType.cs" />
+    <Compile Include="Statistics\StatisticsMethods.cs" />
     <Compile Include="Users\UsersHelper.cs" />
     <Compile Include="VkClient.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />

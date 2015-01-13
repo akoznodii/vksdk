@@ -236,5 +236,9 @@ namespace VK
         public const string CaptchaImage = "captcha_img";
         public const string CaptchaKey = "captcha_key";
         #endregion
+
+        #region Stats constants
+        public const string StatsTrackVisitor = "stats.trackVisitor";
+        #endregion
     }
 }
