@@ -124,6 +124,8 @@ namespace VK
                 Image = element.GetString(VkConstants.CaptchaImage),
             };
 
+            var updateCaptcha = false;
+
             while (true)
             {
                 if (!CaptchaCallback(captcha))
@@ -131,7 +133,15 @@ namespace VK
                     throw new VkApiException(ErrorCodes.CaptchaIsNeeded);
                 }
 
-                requestBuilder.PutCaptcha(captcha.Sid, captcha.Key);
+                if (updateCaptcha)
+                {
+                    requestBuilder.UpdateCaptcha(captcha.Sid, captcha.Key);  
+                }
+                else
+                {
+                    requestBuilder.PutCaptcha(captcha.Sid, captcha.Key);
+                    updateCaptcha = true;
+                }
 
                 var document = LoadDocument(requestBuilder);
 
@@ -141,7 +151,7 @@ namespace VK
                     errorCode == ErrorCodes.CaptchaIsNeeded)
                 {
                     captcha.Sid = document.Root.GetString(VkConstants.CaptchaSid);
-                    captcha.Sid = document.Root.GetString(VkConstants.CaptchaImage);
+                    captcha.Image = document.Root.GetString(VkConstants.CaptchaImage);
                     continue;
                 }
 

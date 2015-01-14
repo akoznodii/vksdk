@@ -122,6 +122,27 @@ namespace VK.Common
             }
 
             _stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", name, value);
+            
+            return this;
+        }
+
+        public RequestBuilder UpdateParameter(string name, string value)
+        {
+            var reuest = ToString();
+
+            var startIndex = reuest.IndexOf(name, StringComparison.OrdinalIgnoreCase);
+
+            if (startIndex == -1)
+            {
+                throw new InvalidOperationException("Parameter was not found");
+            }
+
+            var lastIndex = reuest.LastIndexOf('&');
+            var endIndex = lastIndex > startIndex ? lastIndex - 1 : reuest.Length;
+
+            var insert = string.Format(CultureInfo.InvariantCulture, "{0}={1}", name, value);
+            _stringBuilder.Remove(startIndex, endIndex - startIndex);
+            _stringBuilder.Insert(startIndex, insert);
 
             return this;
         }
@@ -152,6 +173,22 @@ namespace VK.Common
                        .PutParameter(VkConstants.CaptchaKey, key);
         }
 
+        public RequestBuilder UpdateCaptcha(string sid, string key)
+        {
+            if (string.IsNullOrEmpty(sid))
+            {
+                throw new ArgumentNullException("sid");
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+
+            return this.UpdateParameter(VkConstants.CaptchaSid, sid)
+                       .UpdateParameter(VkConstants.CaptchaKey, key);
+        }
+        
         public override string ToString()
         {
             return _stringBuilder.ToString();
