@@ -66,7 +66,6 @@ namespace VK
         public const string NameCase = "name_case";
         public const string Fields = "fields";
         public const string Order = "order";
-        public const string TargetUid = "target_uid";
         public const string SourceUid = "source_uid";
         public const string Status = "status";
         public const string FriendStatus = "friend_status";
@@ -116,13 +115,15 @@ namespace VK
         public const string AudioSave = "audio.save";
         public const string AudioGetRecommendations = "audio.getRecommendations";
         public const string AudioGetPopular = "audio.getPopular";
+        public const string AudioSetBroadcast = "audio.setBroadcast";
 
         public const string AudioGetAlbums = "audio.getAlbums";
         public const string AudioAddAlbum = "audio.addAlbum";
         public const string AudioEditAlbum = "audio.editAlbum";
         public const string AudioDeleteAlbum = "audio.deleteAlbum";
         public const string AudioMoveToAlbum = "audio.moveToAlbum";
-
+        public const string TargetIds = "target_ids";
+        
         #endregion
 
         #region Lyrics properties

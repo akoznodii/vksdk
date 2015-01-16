@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using VK.Collections;
@@ -302,6 +303,32 @@ namespace VK.Audios
             return document.Root.GetBoolean();
         }
 
+        public long SetBroadcast(long audioId, long ownerId, OwnerType ownerType)
+        {
+            var result = SetBroadcast(audioId, ownerId, ownerType, null);
+
+            return result.First().Item1;
+        }
+
+        public ICollection<Tuple<long, OwnerType>> SetBroadcast(long audioId, long ownerId, OwnerType ownerType, ICollection<Tuple<long, OwnerType>> targets)
+        {
+            var requestBuilder = _vkClient.CreateRequestBuilder(VkConstants.AudioSetBroadcast);
+
+            if (audioId != 0)
+            {
+                requestBuilder.PutParameter(VkConstants.AudioType, string.Format(CultureInfo.InvariantCulture, "{0}_{1}", ownerId.ToOwnerId(ownerType), audioId));
+            }
+
+            if (targets != null && targets.Any())
+            {
+                requestBuilder.PutParameter(VkConstants.TargetIds, string.Join(",", targets.Select(t => t.Item1.ToOwnerId(t.Item2))));
+            }
+
+            var document = _vkClient.ExecuteRequest(requestBuilder);
+
+            return document.Root.Descendants().Select(GetIds).ToArray();
+        }
+
         private static Audio GetAudio(XElement element)
         {
             var ownerId = element.GetInt64(VkConstants.OwnerId);
@@ -347,6 +374,20 @@ namespace VK.Audios
                 Id = element.GetInt64(VkConstants.LyricsId),
                 Text = element.GetString(VkConstants.LyricsText)
             };
+        }
+
+        private static Tuple<long, OwnerType> GetIds(XElement element)
+        {
+            var id = element.GetInt64();
+            var ownerType = OwnerType.User;
+
+            if (id < 0)
+            {
+                id *= -1;
+                ownerType = OwnerType.Group;
+            }
+
+            return new Tuple<long, OwnerType>(id, ownerType);
         }
     }
 }
